@@ -313,8 +313,7 @@ utils.directive('scrollDownFixed', ['$window', function ($window) {
     return {
         restrict: 'A',
         link: function (scope, element, attrs) {
-            if (!scope.scrolltop)
-                scope.scrolltop = element.position().top  + element.offset().top;
+            
             var t = $('scrollDownFixedStyleAdded');
             if (!t || (t.length <! 0)){
                 $('body').append('<input type="hidden" id="scrollDownFixedStyleAdded">');
@@ -330,6 +329,8 @@ utils.directive('scrollDownFixed', ['$window', function ($window) {
             }
             element.removeClass('md-tab-fixed-top');
             $(window).scroll(function () {
+                if (!scope.scrolltop)
+                    scope.scrolltop = element.position().top  + element.offset().top;
                 if ($(this).scrollTop() > scope.scrolltop) {
                     element.addClass('md-tab-fixed-top');                    
                 } else {
