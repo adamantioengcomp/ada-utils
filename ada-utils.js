@@ -17,7 +17,7 @@ utils.filter('capitalize', function(){
 /**
  * Similar to Angular OrderBy filter, but keeps the original input when filter = '' or undefined
  */
-utils.filter('sortBy', function($filter){
+utils.filter('sortBy', ['$filter',function($filter){
     return function(input,field,reverse){
         
         if (!input)
@@ -28,7 +28,7 @@ utils.filter('sortBy', function($filter){
 
         return $filter('orderBy')(input,field,reverse);
     };
-});
+}]);
 
 /**
  * The inputs marked with this directive will have its text selected automatically when seting focus
@@ -192,7 +192,7 @@ utils.directive('decimalInput', function() {
 /**
  * When initializing the view, sets the focus to the input marked with this directive
  */
-utils.directive('autoFocus', function($timeout) {
+utils.directive('autoFocus', ['$timeout',function($timeout) {
     return {
         restrict: 'A',
         scope: {
@@ -204,7 +204,7 @@ utils.directive('autoFocus', function($timeout) {
             $timeout(function(){$(input).select();},300);
         }
     };
-});
+}]);
 
 /**
  * Service with utilities
