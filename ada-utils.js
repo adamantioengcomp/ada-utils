@@ -262,8 +262,9 @@ utils.directive('scrollTop', ['$window', function ($window) {
     return {
         restrict: 'A',
         link: function (scope, element, attrs) {
+            var time = attrs.scrollTime ? attrs.scrollTime : 600;
             element.on('click', function () {
-                $('body,html').animate({scrollTop:0},600);
+                $('body,html').animate({scrollTop:0},time);
             });
         }
     };
@@ -274,14 +275,34 @@ utils.directive('scrollTop', ['$window', function ($window) {
  */
 utils.directive('scrollBottom', ['$window', function ($window) {
     return {
-        restrict: 'A',
+        restrict: 'A',        
         link: function (scope, element, attrs) {
+            var time = attrs.scrollTime ? attrs.scrollTime : 600;
             element.on('click', function () {
-                $('body,html').animate({scrollTop:$(document).height()},600);
+                $('body,html').animate({scrollTop:$(document).height()},time);
             });
         }
     };
 }]);
+
+/**
+ * The element marked with this directive will scroll down to bottom when clicked
+ * Or it will roll down que amount informed as parameter to the directive
+ */
+utils.directive('scrollTo', ['$window', function ($window) {
+    return {
+        restrict: 'A',        
+        link: function (scope, element, attrs) {
+            element.on('click', function () {
+                var el = $(attrs.scrollTo);
+                var offset = attrs.scrollToOffset ? Number(attrs.scrollToOffset) : 0;
+                var time = attrs.scrollTime ? attrs.scrollTime : 600;
+                $('body,html').animate({scrollTop:el.offset().top + offset},time);
+            });
+        }
+    };
+}]);
+
 
 /**
  * The button marked with this directive will scroll up to top
