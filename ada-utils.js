@@ -256,7 +256,7 @@ utils.factory('utils',function(){
 });
 
 /**
- * The element marked with this directive will scroll up to top when clicked
+ * The element marked with this directive will scroll the page to the element passed as parameter (selector)
  */
 utils.directive('scrollTop', ['$window', function ($window) {
     return {
