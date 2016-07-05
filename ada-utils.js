@@ -63,8 +63,12 @@ utils.directive('currencyInput', function() {
             var format = function(){
                 var inputVal = input.val();
 
+                if (inputVal == "."){
+                    inputVal = "0.";
+                }
+
                 //clearing left side zeros
-                while (inputVal.charAt(0) == '0') {
+                while ((inputVal.charAt(0) == '0')&&(inputVal.length > 1)&&(inputVal.charAt(1) != '.')) {
                     inputVal = inputVal.substr(1);
                 }
 
