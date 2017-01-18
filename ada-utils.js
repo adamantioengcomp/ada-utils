@@ -14,6 +14,29 @@ utils.filter('capitalize', function(){
     };
 });
 
+
+/**
+ * Filter used to fill a string with occurrences of a character until it have the informed size
+ * @param {Char} char the character to be added
+ * @param {Number} size the desired size for the string
+ * @param {boolean|undefined} append if informed, the characters will be added to the end of the string instead of the start 
+ */
+utils.filter('pad', function(){
+    return function(input, char, size, append){
+        var pad = input;
+        for (var i = 0; i < size; i++){
+            if (append)                
+                pad += ""+char;
+            else
+                pad = ""+char+pad;
+        }
+        if (append)
+            return pad.slice(0,size);
+        else
+            return pad.slice(pad.length-size,pad.length);
+    };
+});
+
 /**
  * Similar to Angular OrderBy filter, but keeps the original input when filter = '' or undefined
  */
@@ -28,6 +51,61 @@ utils.filter('sortBy', ['$filter',function($filter){
 
         return $filter('orderBy')(input,field,reverse);
     };
+}]);
+
+
+/**
+ * Scroll to a element in the screen
+ * @param {Object|Number} element o elemento ou seletor do elemento para o qual se desseja rolar a tela
+ * @param {Number|undefined} offset o offset em relação ao elemento que se deseja rolar. Opicional
+ * @param {Number|undefined} scrollTime tempo de rolagem. Se não for informado, considera-se 600ms
+ */
+utils.factory('$scrollTo',function($window){
+    return function(element,offset,scrollTime){
+        var el = (element instanceof Object) ? element : $(element);
+        var time = scrollTime ? scrollTime : 600;
+        if (!offset){
+            offset = 0;
+        }
+        if (el.offset() && el.offset().top){
+            $('body,html').animate({scrollTop:el.offset().top + offset},time);
+        }
+    }
+})
+
+/**
+ * Scroll up the page
+ * @param {Number|undefined} offset o offset em relação ao topo para onde se deseja rolar. Opicional
+ * @param {Number|undefined} scrollTime tempo de rolagem. Se não for informado, considera-se 600ms
+ */
+utils.factory('$scrollTop',function($window){
+    return function(offset,scrollTime){
+        var time = scrollTime ? scrollTime : 600;
+        if (!offset){
+            offset = 0;
+        }
+        $('body,html').animate({scrollTop:0 + offset},time);
+    }
+})
+
+
+/**
+ * Scroll to the element if the expression is evaluated true
+ * The attribute timeOut is used to set the time before trigger the scroll
+ * The default timeOut is 200ms
+ */
+utils.directive('scrollIf', ['$scrollTo','$timeout',function ($scrollTo,$timeout) {
+  return function(scope, element, attrs) {
+    scope.$watch(attrs.scrollIf, function(value) {
+      if (value) {
+        var el = $(element);
+        $timeout(function(){
+            el = document.getElementById(element.attr('id'));
+            el.scrollIntoView();
+        },attrs.timeOut ? Number(attrs.timeOut) : 300);
+      }
+    });
+  }
 }]);
 
 /**
@@ -343,7 +421,8 @@ utils.directive('scrollDownFixed', ['$window', function ($window) {
             if (!t || (t.length <! 0)){
                 $('body').append('<input type="hidden" id="scrollDownFixedStyleAdded">');
                 $('head').append('<style>' + 
-                        'md-tabs.md-tab-fixed-top > md-tabs-wrapper{'+
+                        'md-tabs.md-tab-fixed-top > md-tabs-wrapper,'+
+                        'md-toolbar.md-tab-fixed-top {'+
                             'top: 0;'+
                             'position: fixed;'+
                             'right: 0;'+
