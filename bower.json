@@ -1,6 +1,6 @@
 {
     "name": "ada-utils",
-    "version": "1.0.0",
+    "version": "v1.1.000",
     "main": "ada-utils.min.js",
     "ignore":[
       
