@@ -60,7 +60,7 @@ utils.filter('sortBy', ['$filter',function($filter){
  * @param {Number|undefined} offset o offset em relação ao elemento que se deseja rolar. Opicional
  * @param {Number|undefined} scrollTime tempo de rolagem. Se não for informado, considera-se 600ms
  */
-utils.factory('$scrollTo',function($window){
+utils.factory('$scrollTo',['$window',function($window){
     return function(element,offset,scrollTime){
         var el = (element instanceof Object) ? element : $(element);
         var time = scrollTime ? scrollTime : 600;
@@ -71,14 +71,14 @@ utils.factory('$scrollTo',function($window){
             $('body,html').animate({scrollTop:el.offset().top + offset},time);
         }
     }
-})
+}]);
 
 /**
  * Scroll up the page
  * @param {Number|undefined} offset o offset em relação ao topo para onde se deseja rolar. Opicional
  * @param {Number|undefined} scrollTime tempo de rolagem. Se não for informado, considera-se 600ms
  */
-utils.factory('$scrollTop',function($window){
+utils.factory('$scrollTop',['$window',function($window){
     return function(offset,scrollTime){
         var time = scrollTime ? scrollTime : 600;
         if (!offset){
@@ -86,7 +86,7 @@ utils.factory('$scrollTop',function($window){
         }
         $('body,html').animate({scrollTop:0 + offset},time);
     }
-})
+}]);
 
 
 /**
